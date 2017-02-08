@@ -35,6 +35,9 @@ public:
   /// Return all bin counts for histogrammed data.
   std::vector<double> GetBinContents() { return _counts; }
 
+  /// Return all bin variances for histogrammed data.
+  std::vector<double> GetBinVariances() { return _variances; }
+  
   ///
   double GetBinDensity(int bin) { return _btree->GetBinDensity(bin); }
 
@@ -50,7 +53,7 @@ public:
   ///
   void SortBinsByDensity()      { return _btree->SortBinsByDensity(); }
   
-  ///
+  /// Reset counts and variances
   void Reset();
   
   ClassDef(Turtle,0)
@@ -63,6 +66,7 @@ public:
   unsigned int _datasize;
   double* _data;
   std::vector<double> _counts;
+  std::vector<double> _variances;
   int _numberofbins;
 
   double* _ReadTree(std::vector<std::string>& rootfilenames, 

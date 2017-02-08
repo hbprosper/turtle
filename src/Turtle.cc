@@ -34,7 +34,8 @@ Turtle::Turtle(vector<string>& rootfilenames,
     _rootfilenames(rootfilenames),
     _variablenames(variablenames),
     _treename(treename),
-    _counts(numberofbins,0)
+    _counts(numberofbins, 0),
+    _variances(numberofbins, 0)
 {
   double* data = _ReadTree(rootfilenames,
 			   variablenames,
@@ -93,12 +94,14 @@ void Turtle::Fill(std::vector<double>& point, double weight)
   // Histogram data and store values in _counts
   int bin = _btree->FindBin(&point[0]);
   _counts[bin] += weight;
+  _variances[bin] += weight*weight;
 }
 
 void Turtle::Reset()
 {
   // clear _counts
   transform(_counts.begin(), _counts.end(), _counts.begin(), zero);
+  transform(_variances.begin(), _variances.end(), _variances.begin(), zero);
 }
 
 double* Turtle::_ReadTree(vector<string>& rootfilenames, 
