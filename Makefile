@@ -1,6 +1,6 @@
 # ----------------------------------------------------------------------------
 # Build libturtle.so
-# Created 27 Feb 2013 HBP & SS
+# Created 27 Feb 2013 HBP & Sezen Sekmen
 #         30 May 2015 HBP - standardize structure (src, lib, include) 
 # ----------------------------------------------------------------------------
 ifndef ROOTSYS
@@ -61,7 +61,6 @@ else
 	LDEXT	:= .so
 endif
 LDFLAGS += $(shell root-config --ldflags)
-LIBS 	:= -lMathMore
 LIBS	+= $(shell root-config --libs)
 LIBRARY	:= $(libdir)/lib$(NAME)$(LDEXT)
 # ----------------------------------------------------------------------------

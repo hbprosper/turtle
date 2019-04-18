@@ -3,6 +3,7 @@
 // ---------------------------------------------------------------------------
 // Created May 11, 2011 by Harrison Prosper and Sezen Sekmen
 // Updated May 21, 2015 HBP - Implement Fill
+//         May 18, 2019 HBP - add FindBin method
 // ---------------------------------------------------------------------------
 #include <vector>
 #include <string>
@@ -52,6 +53,14 @@ public:
 
   ///
   void SortBinsByDensity()      { return _btree->SortBinsByDensity(); }
+
+  ///
+  int FindBin(std::vector<double>& point)
+  { return (int)_btree->FindBin(&point[0]); }
+
+  ///
+  std::vector<std::vector<double> >  GetPointsInBin(int bin)
+    { return _btree->GetPointsInBin( bin ); }
   
   /// Reset counts and variances
   void Reset();
