@@ -196,11 +196,12 @@ double* Turtle::_ReadTree(vector<string>& rootfilenames,
   for (size_t i=0; i<rootfilenames.size(); i++)
     chain.Add(rootfilenames[i].c_str());
 
+  _numberofbins =  numberofbins;
   _datasize = chain.GetEntries();
   if (numberofpoints > 0)
     _datasize = TMath::Min(_datasize, (size_t)numberofpoints); 
-  int k = _datasize / numberofbins;
-  _datasize = k * numberofbins;
+  _entries_per_bin = _datasize / _numberofbins;
+  _datasize  = _entries_per_bin * _numberofbins;
   
   // Allocate enough space for the number of points times the 
   // number of variables
@@ -222,6 +223,9 @@ double* Turtle::_ReadTree(vector<string>& rootfilenames,
       for (size_t j=0; j< variablenames.size(); j++)
         _data[entry+j*_datasize] = row[j];
     }
-    cout << "data size: " << _datasize << endl;
+  cout << "number of bins: " << _numberofbins << endl;
+  cout << "entries/bin:    " << _entries_per_bin << endl;
+  cout << "data size:      " << _datasize << endl;
+  
   return &_data[0];
 }

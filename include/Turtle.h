@@ -62,13 +62,16 @@ public:
   void SortBinsByDensity(bool ascend=true) { _btree->SortBinsByDensity(ascend); }
 
   ///
-  int FindBin(std::vector<double>& point)
-  { return (int)_btree->FindBin(&point[0]); }
+  size_t FindBin(std::vector<double>& point)
+  { return _btree->FindBin(&point[0]); }
 
+  size_t GetNBins() { return _btree->GetNBins();  }
+
+  size_t GetEntriesPerBin() { return _entries_per_bin; }
+  
   ///
   std::vector<std::vector<double> >  GetPointsInBin(int bin)
     { return _btree->GetPointsInBin( bin ); }
-  
 
   /// Clear counts and variances
   void clear();
@@ -90,7 +93,7 @@ public:
   /// Return bin variances for histogrammed data.
   std::vector<double> variances() { return _variances; }
 
-  
+
   ClassDef(Turtle,0)
   
  private:
@@ -100,8 +103,8 @@ public:
   std::string              _treename;
   std::vector<double>      _counts;
   std::vector<double>      _variances;
-  int _numberofbins;
-
+  size_t  _numberofbins;
+  size_t  _entries_per_bin;
   size_t  _datasize;
   double* _data;
   double* _ReadTree(std::vector<std::string>& rootfilenames, 
