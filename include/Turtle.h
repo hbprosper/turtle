@@ -50,10 +50,10 @@ public:
   double density(int bin) { return _btree->GetBinDensity(bin); }
   
   ///
-  double minDensity() { return _btree->GetBinMinDensity(); }
+  size_t binMinDensity() { return _btree->GetBinMinDensity(); }
 
   ///
-  double maxDensity() { return _btree->GetBinMaxDensity(); }
+  size_t binMaxDensity() { return _btree->GetBinMaxDensity(); }
   
   ///
   double volume(int bin)  { return _btree->GetBinVolume(bin); }
