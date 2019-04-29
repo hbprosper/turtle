@@ -7,7 +7,6 @@
 // ---------------------------------------------------------------------------
 #include <vector>
 #include <string>
-#include <iostream>
 #include "TKDTreeBinning.h"
 // ---------------------------------------------------------------------------
 ///
@@ -18,11 +17,32 @@ public:
   Turtle();
 
   ///
+  Turtle(std::string rootfilename, 
+	 std::vector<std::string>& variablenames, 
+	 std::string treename,
+	 int numberofbins,
+	 int numberofpoints=-1);
+  
+  ///
   Turtle(std::vector<std::string>& rootfilenames, 
 	 std::vector<std::string>& variablenames, 
 	 std::string treename,
 	 int numberofbins,
 	 int numberofpoints=-1);
+
+  ///
+  void Build(std::string rootfilename, 
+	     std::vector<std::string>& variablenames, 
+	     std::string treename,
+	     int numberofbins,
+	     int numberofpoints=-1);
+  
+  ///
+  void Build(std::vector<std::string>& rootfilenames, 
+	     std::vector<std::string>& variablenames, 
+	     std::string treename,
+	     int numberofbins,
+	     int numberofpoints=-1);
 
   virtual ~Turtle();
 
@@ -52,7 +72,7 @@ public:
   const double* GetBinWidth(int bin)  { return _btree->GetBinWidth(bin); }
 
   ///
-  void SortBinsByDensity()      { return _btree->SortBinsByDensity(); }
+  void SortBinsByDensity(bool ascend=true) { _btree->SortBinsByDensity(ascend); }
 
   ///
   int FindBin(std::vector<double>& point)
@@ -62,22 +82,22 @@ public:
   std::vector<std::vector<double> >  GetPointsInBin(int bin)
     { return _btree->GetPointsInBin( bin ); }
   
-  /// Reset counts and variances
-  void Reset();
+  /// Clear counts and variances
+  void Clear();
   
   ClassDef(Turtle,0)
   
  private:
-  TKDTreeBinning* _btree;
+  TKDTreeBinning*          _btree;
   std::vector<std::string> _rootfilenames;
   std::vector<std::string> _variablenames; 
-  std::string _treename;
-  unsigned int _datasize;
-  double* _data;
-  std::vector<double> _counts;
-  std::vector<double> _variances;
+  std::string              _treename;
+  std::vector<double>      _counts;
+  std::vector<double>      _variances;
   int _numberofbins;
 
+  size_t  _datasize;
+  double* _data;
   double* _ReadTree(std::vector<std::string>& rootfilenames, 
                     std::vector<std::string>& variablenames, 
                     std::string treename,

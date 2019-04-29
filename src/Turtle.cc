@@ -6,6 +6,8 @@
 // Updated May 21, 2015 HBP - Implement Fill
 // ---------------------------------------------------------------------------
 #include <algorithm>
+#include <iostream>
+#include <cassert>
 #include "TMath.h"
 #include "TChain.h"
 #include "Turtle.h"
@@ -15,6 +17,12 @@ using namespace std;
 
 Turtle::Turtle()
   : _btree(0),
+    _rootfilenames(vector<string>()),
+    _variablenames(vector<string>()),
+    _treename(""),
+    _counts(vector<double>()),
+    _variances(vector<double>()),
+    _datasize(0),
     _data(0)
 {
 }
@@ -31,12 +39,55 @@ Turtle::Turtle(vector<string>& rootfilenames,
                int numberofbins,
                int numberofpoints)
   : _btree(0),
-    _rootfilenames(rootfilenames),
-    _variablenames(variablenames),
-    _treename(treename),
-    _counts(numberofbins, 0),
-    _variances(numberofbins, 0)
+    _rootfilenames(vector<string>()),
+    _variablenames(vector<string>()),
+    _treename(""),
+    _counts(vector<double>()),
+    _variances(vector<double>()),
+    _datasize(0),
+    _data(0)
 {
+  Build(rootfilenames,
+	variablenames,
+	treename, 
+	numberofbins,
+	numberofpoints);
+}
+
+Turtle::Turtle(string rootfilename,
+               vector<string>& variablenames,
+               string treename,
+               int numberofbins,
+               int numberofpoints)
+  : _btree(0),
+    _rootfilenames(vector<string>()),
+    _variablenames(vector<string>()),
+    _treename(""),
+    _counts(vector<double>()),
+    _variances(vector<double>()),
+    _datasize(0),
+    _data(0)
+{
+  Build(rootfilename,
+	variablenames,
+	treename, 
+	numberofbins,
+	numberofpoints);
+}
+
+
+void Turtle::Build(vector<string>& rootfilenames,
+		   vector<string>& variablenames,
+		   string treename,
+		   int numberofbins,
+		   int numberofpoints)
+{
+  _rootfilenames = rootfilenames;
+  _variablenames = variablenames;
+  _treename      = treename;
+  _counts        = vector<double>(numberofbins, 0);
+  _variances     = vector<double>(numberofbins, 0);
+
   double* data = _ReadTree(rootfilenames,
 			   variablenames,
 			   treename, 
@@ -51,6 +102,21 @@ Turtle::Turtle(vector<string>& rootfilenames,
   _numberofbins = _btree->GetNBins();
 }
 
+void Turtle::Build(string rootfilename,
+		   vector<string>& variablenames,
+		   string treename,
+		   int numberofbins,
+		   int numberofpoints)
+{
+  vector<string> rootfilenames(1, rootfilename);
+  Build(rootfilenames, 
+	variablenames,
+	treename, 
+	numberofbins,
+	numberofpoints);
+}
+
+
 namespace  {
   double zero(double) { return 0; }
 };
@@ -58,9 +124,12 @@ namespace  {
 void Turtle::Fill(std::vector<std::string>& rootfilenames,
 		  std::string weightname)
 {
+  assert( _btree );
+  assert( (size_t)_btree->GetNBins() == _counts.size() );
+  
   // Histogram data from given files and store values in _counts
   TChain chain(_treename.c_str());
-  for (unsigned int i=0; i < rootfilenames.size(); i++)
+  for (size_t i=0; i < rootfilenames.size(); i++)
     chain.Add(rootfilenames[i].c_str());
 
   int numberofpoints = chain.GetEntries();
@@ -69,7 +138,7 @@ void Turtle::Fill(std::vector<std::string>& rootfilenames,
   vector<double> row(_variablenames.size());
 
   // create a branch for each variable
-  for (unsigned int i=0; i < _variablenames.size(); i++)
+  for (size_t i=0; i < _variablenames.size(); i++)
     chain.SetBranchAddress(_variablenames[i].c_str(), &row[i]);
 
   double weight = 1.0;
@@ -86,18 +155,22 @@ void Turtle::Fill(std::vector<std::string>& rootfilenames,
         cout << "entry: " << entry << endl;
       int bin = _btree->FindBin(&row[0]);
       _counts[bin] += weight;
+      _variances[bin] += weight*weight;
     }
 }
 
 void Turtle::Fill(std::vector<double>& point, double weight)
 {
   // Histogram data and store values in _counts
+  assert( _btree );
+  assert( (size_t)_btree->GetNBins() == _counts.size() );
+  
   int bin = _btree->FindBin(&point[0]);
   _counts[bin] += weight;
   _variances[bin] += weight*weight;
 }
 
-void Turtle::Reset()
+void Turtle::Clear()
 {
   // clear _counts
   transform(_counts.begin(), _counts.end(), _counts.begin(), zero);
@@ -111,12 +184,12 @@ double* Turtle::_ReadTree(vector<string>& rootfilenames,
                           int numberofpoints)
 {
   TChain chain(treename.c_str());
-  for (unsigned int i=0; i<rootfilenames.size(); i++)
+  for (size_t i=0; i<rootfilenames.size(); i++)
     chain.Add(rootfilenames[i].c_str());
 
   _datasize = chain.GetEntries();
   if (numberofpoints > 0)
-    _datasize = TMath::Min(_datasize, (unsigned int)numberofpoints); 
+    _datasize = TMath::Min(_datasize, (size_t)numberofpoints); 
   int k = _datasize / numberofbins;
   _datasize = k * numberofbins;
 
@@ -130,16 +203,16 @@ double* Turtle::_ReadTree(vector<string>& rootfilenames,
   // Allocate enough space for the number of variables
   vector<double> row(variablenames.size());
 
-  for (unsigned int i=0; i < variablenames.size(); i++)
+  for (size_t i=0; i < variablenames.size(); i++)
     chain.SetBranchAddress(variablenames[i].c_str(), &row[i]);
 
-  for (unsigned int entry=0; entry < _datasize; entry++)
+  for (size_t entry=0; entry < _datasize; entry++)
     {
       chain.GetEntry(entry);
       if ( entry % 100000 == 0 ) 
         cout << entry << endl;
 
-      for (unsigned int j=0; j< variablenames.size(); j++)
+      for (size_t j=0; j< variablenames.size(); j++)
         _data[entry+j*_datasize] = row[j];
     }
   return &_data[0];
