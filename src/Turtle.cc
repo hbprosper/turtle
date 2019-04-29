@@ -47,7 +47,7 @@ Turtle::Turtle(vector<string>& rootfilenames,
     _datasize(0),
     _data(0)
 {
-  Build(rootfilenames,
+  build(rootfilenames,
 	variablenames,
 	treename, 
 	numberofbins,
@@ -68,7 +68,7 @@ Turtle::Turtle(string rootfilename,
     _datasize(0),
     _data(0)
 {
-  Build(rootfilename,
+  build(rootfilename,
 	variablenames,
 	treename, 
 	numberofbins,
@@ -76,7 +76,7 @@ Turtle::Turtle(string rootfilename,
 }
 
 
-void Turtle::Build(vector<string>& rootfilenames,
+void Turtle::build(vector<string>& rootfilenames,
 		   vector<string>& variablenames,
 		   string treename,
 		   int numberofbins,
@@ -88,7 +88,7 @@ void Turtle::Build(vector<string>& rootfilenames,
   _counts        = vector<double>(numberofbins, 0);
   _variances     = vector<double>(numberofbins, 0);
 
-  double* data = _ReadTree(rootfilenames,
+  double* data = _readTree(rootfilenames,
 			   variablenames,
 			   treename, 
 			   numberofbins,
@@ -102,14 +102,14 @@ void Turtle::Build(vector<string>& rootfilenames,
   _numberofbins = _btree->GetNBins();
 }
 
-void Turtle::Build(string rootfilename,
+void Turtle::build(string rootfilename,
 		   vector<string>& variablenames,
 		   string treename,
 		   int numberofbins,
 		   int numberofpoints)
 {
   vector<string> rootfilenames(1, rootfilename);
-  Build(rootfilenames, 
+  build(rootfilenames, 
 	variablenames,
 	treename, 
 	numberofbins,
@@ -186,7 +186,7 @@ void Turtle::clear()
   transform(_variances.begin(), _variances.end(), _variances.begin(), zero);
 }
 
-double* Turtle::_ReadTree(vector<string>& rootfilenames, 
+double* Turtle::_readTree(vector<string>& rootfilenames, 
                           vector<string>& variablenames, 
                           string treename, 
                           int numberofbins,
