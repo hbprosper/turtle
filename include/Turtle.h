@@ -45,19 +45,6 @@ public:
 	     int numberofpoints=-1);
 
   virtual ~Turtle();
-
-  /// Histogram data from specified files.
-  void Fill(std::vector<std::string>& rootfilenames,
-	    std::string weightname="");
-
-  /// Histogram data from specified files.
-  void Fill(std::vector<double>& point, double weight=1);
-  
-  /// Return all bin counts for histogrammed data.
-  std::vector<double> GetBinContents() { return _counts; }
-
-  /// Return all bin variances for histogrammed data.
-  std::vector<double> GetBinVariances() { return _variances; }
   
   ///
   double GetBinDensity(int bin) { return _btree->GetBinDensity(bin); }
@@ -82,8 +69,27 @@ public:
   std::vector<std::vector<double> >  GetPointsInBin(int bin)
     { return _btree->GetPointsInBin( bin ); }
   
+
   /// Clear counts and variances
-  void Clear();
+  void clear();
+  
+  /// Histogram data from specified file.
+  void fill(std::string rootfilename,
+	    std::string weightname="");
+
+    /// Histogram data from specified files.
+  void fill(std::vector<std::string>& rootfilenames,
+	    std::string weightname="");
+
+  /// Histogram data.
+  void fill(std::vector<double>& point, double weight=1);
+  
+  /// Return bin counts for histogrammed data.
+  std::vector<double> counts() { return _counts; }
+
+  /// Return bin variances for histogrammed data.
+  std::vector<double> variances() { return _variances; }
+
   
   ClassDef(Turtle,0)
   

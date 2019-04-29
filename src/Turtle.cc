@@ -121,7 +121,13 @@ namespace  {
   double zero(double) { return 0; }
 };
 
-void Turtle::Fill(std::vector<std::string>& rootfilenames,
+void Turtle::fill(string rootfilename, string weightname)
+{
+  vector<string> rootfilenames(1, rootfilename);
+  fill(rootfilenames, weightname);
+}
+
+void Turtle::fill(std::vector<std::string>& rootfilenames,
 		  std::string weightname)
 {
   assert( _btree );
@@ -145,32 +151,35 @@ void Turtle::Fill(std::vector<std::string>& rootfilenames,
   if ( weightname != "" )
     chain.SetBranchAddress(weightname.c_str(), &weight);
   
-  // clear _counts
-  transform(_counts.begin(), _counts.end(), _counts.begin(), zero);
+  // clear _counts, _variances
+  clear();
 
   for (int entry=0; entry < numberofpoints; entry++)
     {
       chain.GetEntry(entry);
-      if ( entry % 100000 == 0 ) 
+      if ( entry % 50000 == 0 ) 
         cout << "entry: " << entry << endl;
       int bin = _btree->FindBin(&row[0]);
+        if ( bin < 0 ) continue;
+	if ( (size_t)bin >= _counts.size() ) continue;
       _counts[bin] += weight;
       _variances[bin] += weight*weight;
     }
 }
 
-void Turtle::Fill(std::vector<double>& point, double weight)
+void Turtle::fill(std::vector<double>& point, double weight)
 {
   // Histogram data and store values in _counts
   assert( _btree );
   assert( (size_t)_btree->GetNBins() == _counts.size() );
-  
   int bin = _btree->FindBin(&point[0]);
+  if ( bin < 0 ) return;
+  if ( (size_t)bin >= _counts.size() ) return;
   _counts[bin] += weight;
   _variances[bin] += weight*weight;
 }
 
-void Turtle::Clear()
+void Turtle::clear()
 {
   // clear _counts
   transform(_counts.begin(), _counts.end(), _counts.begin(), zero);
@@ -192,8 +201,6 @@ double* Turtle::_ReadTree(vector<string>& rootfilenames,
     _datasize = TMath::Min(_datasize, (size_t)numberofpoints); 
   int k = _datasize / numberofbins;
   _datasize = k * numberofbins;
-
-  cout << "datasize: " << _datasize << endl;
   
   // Allocate enough space for the number of points times the 
   // number of variables
@@ -209,11 +216,12 @@ double* Turtle::_ReadTree(vector<string>& rootfilenames,
   for (size_t entry=0; entry < _datasize; entry++)
     {
       chain.GetEntry(entry);
-      if ( entry % 100000 == 0 ) 
+      if ( entry % 50000 == 0 ) 
         cout << entry << endl;
 
       for (size_t j=0; j< variablenames.size(); j++)
         _data[entry+j*_datasize] = row[j];
     }
+    cout << "data size: " << _datasize << endl;
   return &_data[0];
 }
