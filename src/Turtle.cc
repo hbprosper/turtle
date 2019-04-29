@@ -157,8 +157,8 @@ void Turtle::fill(std::vector<std::string>& rootfilenames,
   for (int entry=0; entry < numberofpoints; entry++)
     {
       chain.GetEntry(entry);
-      if ( entry % 50000 == 0 ) 
-        cout << "entry: " << entry << endl;
+      if ( entry % 25000 == 0 ) 
+        cout << entry << endl;
       int bin = _btree->FindBin(&row[0]);
         if ( bin < 0 ) continue;
 	if ( (size_t)bin >= _counts.size() ) continue;
@@ -217,7 +217,7 @@ double* Turtle::_ReadTree(vector<string>& rootfilenames,
   for (size_t entry=0; entry < _datasize; entry++)
     {
       chain.GetEntry(entry);
-      if ( entry % 50000 == 0 ) 
+      if ( entry % 25000 == 0 ) 
         cout << entry << endl;
 
       for (size_t j=0; j< variablenames.size(); j++)
@@ -226,6 +226,5 @@ double* Turtle::_ReadTree(vector<string>& rootfilenames,
   cout << "number of bins: " << _numberofbins << endl;
   cout << "entries/bin:    " << _entries_per_bin << endl;
   cout << "data size:      " << _datasize << endl;
-  
   return &_data[0];
 }

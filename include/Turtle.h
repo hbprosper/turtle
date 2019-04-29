@@ -31,14 +31,14 @@ public:
 	 int numberofpoints=-1);
 
   ///
-  void Build(std::string rootfilename, 
+  void build(std::string rootfilename, 
 	     std::vector<std::string>& variablenames, 
 	     std::string treename,
 	     int numberofbins,
 	     int numberofpoints=-1);
   
   ///
-  void Build(std::vector<std::string>& rootfilenames, 
+  void build(std::vector<std::string>& rootfilenames, 
 	     std::vector<std::string>& variablenames, 
 	     std::string treename,
 	     int numberofbins,
@@ -47,30 +47,36 @@ public:
   virtual ~Turtle();
   
   ///
-  double GetBinDensity(int bin) { return _btree->GetBinDensity(bin); }
-
-  ///
-  double GetBinVolume(int bin)  { return _btree->GetBinVolume(bin); }
-
-  ///
-  const double* GetBinCenter(int bin) { return _btree->GetBinCenter(bin); }
-
-  ///
-  const double* GetBinWidth(int bin)  { return _btree->GetBinWidth(bin); }
-
-  ///
-  void SortBinsByDensity(bool ascend=true) { _btree->SortBinsByDensity(ascend); }
-
-  ///
-  size_t FindBin(std::vector<double>& point)
-  { return _btree->FindBin(&point[0]); }
-
-  size_t GetNBins() { return _btree->GetNBins();  }
-
-  size_t GetEntriesPerBin() { return _entries_per_bin; }
+  double density(int bin) { return _btree->GetBinDensity(bin); }
   
   ///
-  std::vector<std::vector<double> >  GetPointsInBin(int bin)
+  double minDensity() { return _btree->GetBinMinDensity(); }
+
+  ///
+  double maxDensity() { return _btree->GetBinMaxDensity(); }
+  
+  ///
+  double volume(int bin)  { return _btree->GetBinVolume(bin); }
+
+  ///
+  const double* center(int bin) { return _btree->GetBinCenter(bin); }
+
+  ///
+  const double* width(int bin)  { return _btree->GetBinWidth(bin); }
+
+  ///
+  void sortDensity(bool ascend=false) { _btree->SortBinsByDensity(ascend); }
+
+  ///
+  size_t findBin(std::vector<double>& point)
+  { return _btree->FindBin(&point[0]); }
+
+  size_t nBins() { return _btree->GetNBins();  }
+  
+  size_t entriesPerBin() { return _entries_per_bin; }
+  
+  ///
+  std::vector<std::vector<double> >  pointsInBin(int bin)
     { return _btree->GetPointsInBin( bin ); }
 
   /// Clear counts and variances
@@ -107,7 +113,7 @@ public:
   size_t  _entries_per_bin;
   size_t  _datasize;
   double* _data;
-  double* _ReadTree(std::vector<std::string>& rootfilenames, 
+  double* _readTree(std::vector<std::string>& rootfilenames, 
                     std::vector<std::string>& variablenames, 
                     std::string treename,
                     int numberofbins,
