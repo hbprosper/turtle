@@ -5,7 +5,7 @@ from array import array
 from ROOT import *
 #-----------------------------------------------------------------------------
 def main():
-    print "\tTurtle"
+    print("\tTurtle")
 
     # A workaround ROOT 6.08.04
     gSystem.AddDynamicPath('%s/../lib' % os.environ['PWD'])
