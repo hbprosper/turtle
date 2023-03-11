@@ -1,12 +1,11 @@
 # turtlebinning
 
 ## Introduction
-This is a wrapper around ROOT's __TKDTreeBinning__ n-dimensional
-binningclass, which bins data using recursive binary partitioning. At
-every step, the algorithm splits each bin in two with equal numbers of
+This is a wrapper around ROOT's __TKDTreeBinning__ which bins n-dimensional data using recursive binary partitioning. At
+each step, the algorithm splits every bin into two bins with equal numbers of
 entries in
-each bin. This continues until every bin has desired number of
-entries.
+each bin. This continues until the specified number of bins is reached. The number of entries in every bin will be the same. For example, if you have 1,000,000 points in a 10-dimensional space and ask for 1,000 bins in that space, then the number of points per bin will be a 1,000. Typically, the volume of bins will vary across the space. The density at the center of each bin is approximated by the number of points per bin / bin volume.
+
 
 ## Dependencies
 This package, which is written in C++ but can be used with Python, depends on the data analysis package [ROOT](https://root.cern.ch) from CERN and the C++ Standard Template Library.
@@ -18,7 +17,7 @@ git clone https://github.com/hbprosper/turtle
 cd turtle
 make
 ```
-If you have an Anaconda (or miniconda3) installation, you can install the Python module __turtlebinning__ as follows
+If you have the software environment system [Miniconda](https://docs.conda.io/en/latest/miniconda.html) installed, you can install the Python module __turtlebinning__ in your current miniconda environment.
 ```bash
 make install
 ```
@@ -69,13 +68,13 @@ can do so as follows.
 bin = 42
 ind = ttb.indices(bin)
 ```
-This returns a stl vector of type int containing the
-indices, that is, the ordinal values of the points in the dataframe
-__df__, of the points that lie in bin 42. If you want the points
+This returns an object of type __vector\<int\>__ containing the
+indices (that is, the ordinal values of the points in the dataframe
+__df__) of the points that lie in bin 42. If you want the points
 themselves, do:
 ```python
 bin = 42
 pts = ttb.points(bin)
 ```
-which returns the points in an stl vector of type
-__vector\<double\>__.
+which returns the points in an object of type
+__vector\<vector\<double\> \>__.
