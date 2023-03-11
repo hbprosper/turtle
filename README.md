@@ -8,7 +8,7 @@ each. The partitioning continues until the specified number of bins is reached. 
 
 
 ## Dependencies
-This package, which is written in C++ and which can be used with Python, depends on [ROOT](https://root.cern.ch) and the C++ Standard Template Library. It has been tested successfully with ROOT version 6.26/10 and Python version 3.11.0. The C++ in the source codem (Turtle.cc, Turtle.h) s hardly cutting edge so it ought to compile with any standard compiler, such as clang++ or g++, and with versions of ROOT that are relatively recent, say later than version 6.18.00. The Python binding is based on PyROOT.
+This package, which is written in C++ and which can be used with Python, depends on [ROOT](https://root.cern.ch) and the C++ Standard Template Library. It has been tested successfully with ROOT version 6.26/10 and Python version 3.11.0. The C++ in the source code (Turtle.cc, Turtle.h) is hardly cutting edge so it ought to compile with any standard compiler, such as clang++ or g++, and with versions of ROOT that are relatively recent, say later than version 6.18.00. The Python binding is based on PyROOT.
 
 ## Installation
 Download the code using:
