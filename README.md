@@ -77,4 +77,4 @@ bin = 42
 pts = ttb.points(bin)
 ```
 which returns the points in an object of type
-__vector\<vector\<double\> \>__. The STL vector class work as expected. 
+__vector\<vector\<double\> \>__. The STL vector class works as expected. 
