@@ -4,7 +4,7 @@
 This is a wrapper around the C++ class __TKDTreeBinning__ from the CERN data-analysis package [ROOT](https://root.cern.ch). TKDTreeBinning bins n-dimensional data using recursive binary partitioning. At
 each step, the algorithm splits every bin into two bins with equal numbers of
 entries in
-each. The partitioning continues until the specified number of bins is reached.  For example, if you have 1,000,000 points in a 10-dimensional space and ask for 750 bins in that space then the number of points per bin will be a int(1,000,000/750) = 1,333 and 1,333 x 750 = 999,750 points will be binned. The volume of bins will typically vary across the space. The density at the center of each bin is approximated by the number of points per bin / bin volume.
+each. The partitioning continues until the specified number of bins is reached.  For example, if you have 1,000,000 points in a 10-dimensional space and ask for 750 bins in that space then the number of points per bin will be int(1,000,000/750) = 1,333 and 1,333 x 750 = 999,750 points will be binned. The volume of bins will typically vary across the space. The density at the center of each bin is approximated by the number of points per bin / bin volume.
 
 
 ## Dependencies
