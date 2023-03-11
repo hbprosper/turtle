@@ -49,7 +49,7 @@ can do so as follows.
 bin = 42
 ind = ttb.indices(bin)
 ```
-This returns a vector of type __vector<int>__ containing the
+This returns a stl vector of type int containing the
 indices, that is, the ordinal values of the points in the dataframe
 __df__, of the points that lie in bin 42. If you want the points
 themselves, do:
@@ -57,5 +57,5 @@ themselves, do:
 bin = 42
 pts = ttb.points(bin)
 ```
-which returns the points in a vector of type
-__vector<vector<double>__ __>__.
+which returns the points in an stl vector of type
+vector<double>.
