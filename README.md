@@ -8,6 +8,26 @@ entries in
 each bin. This continues until every bin has desired number of
 entries.
 
+## Dependencies
+This package depends on the package (ROOT)[https://root.cern.ch] from CERN.
+
+## Installation
+
+```bash
+git clone https://github.com/hbprosper/turtle
+cd turtle
+make
+```
+If you have an anaconda (or miniconda3) installation, you can install the Python module __turtlebinning__ as follows
+```bash
+make install
+```
+and uninstall it with
+```bash
+make uninstall
+```
+Otherwise, source __setup.sh__ to define a few environment variables. If you are running a shell other than bash, you will have to make a version of setup.sh for your shell.
+
 __turtlebinning__ can work directly on flat ROOT files (basically,
 tables). However, it can also work directly on an appropriately structured
 array as in the example below. This is convenient if you are using dataframes.
