@@ -9,7 +9,7 @@ each bin. This continues until every bin has desired number of
 entries.
 
 ## Dependencies
-This package depends on the data analysis package (https://root.cern.ch)[ROOT] from CERN.
+This package depends on the data analysis package [ROOT](https://root.cern.ch) from CERN.
 
 ## Installation
 
