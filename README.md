@@ -9,10 +9,10 @@ each bin. This continues until every bin has desired number of
 entries.
 
 ## Dependencies
-This package depends on the data analysis package [ROOT](https://root.cern.ch) from CERN.
+This package, which is written in C++ but can be used with Python, depends on the data analysis package [ROOT](https://root.cern.ch) from CERN and the C++ Standard Template Library.
 
 ## Installation
-
+Download the code as follows.
 ```bash
 git clone https://github.com/hbprosper/turtle
 cd turtle
