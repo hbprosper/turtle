@@ -9,7 +9,7 @@ each bin. This continues until every bin has desired number of
 entries.
 
 ## Dependencies
-This package depends on the package [https://root.cern.ch](ROOT) from CERN.
+This package depends on the data analysis package (https://root.cern.ch)[ROOT] from CERN.
 
 ## Installation
 
@@ -18,7 +18,7 @@ git clone https://github.com/hbprosper/turtle
 cd turtle
 make
 ```
-If you have an anaconda (or miniconda3) installation, you can install the Python module __turtlebinning__ as follows
+If you have an Anaconda (or miniconda3) installation, you can install the Python module __turtlebinning__ as follows
 ```bash
 make install
 ```
@@ -78,4 +78,4 @@ bin = 42
 pts = ttb.points(bin)
 ```
 which returns the points in an stl vector of type
-vector\<double\>.
+__vector\<double\>__.
