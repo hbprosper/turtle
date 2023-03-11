@@ -9,7 +9,7 @@ each bin. This continues until every bin has desired number of
 entries.
 
 ## Dependencies
-This package depends on the package (ROOT)[https://root.cern.ch] from CERN.
+This package depends on the package [https://root.cern.ch](ROOT) from CERN.
 
 ## Installation
 
@@ -78,4 +78,4 @@ bin = 42
 pts = ttb.points(bin)
 ```
 which returns the points in an stl vector of type
-vector<double>.
+vector\<double\>.
