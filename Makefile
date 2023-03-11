@@ -1,14 +1,31 @@
 # ----------------------------------------------------------------------------
-# Build libturtle.so
+# Build libturtlebinning.so
 # Created 27 Feb 2013 HBP & Sezen Sekmen
-#         30 May 2015 HBP - standardize structure (src, lib, include) 
+#         30 May 2015 HBP - standardize structure (src, lib, include)
+#         08 Mar 2023 HBP - make compatible with conda and rename
+#                           library to turtlebinning to avoid conflict with
+#                           existing "turtle" Python module.
 # ----------------------------------------------------------------------------
 ifndef ROOTSYS
 	$(error *** Please set up Root)
 endif
+
+ifndef TURTLE_PREFIX
+ifdef CONDA_PREFIX
+TURTLE_PREFIX := $(CONDA_PREFIX)
+endif
+endif
+
+PYVER	:= $(shell python --version | cut -d' ' -f2)
+PY1	:= $(shell echo "$(PYVER)"  | cut -d. -f1)
+PY2	:= $(shell echo "$(PYVER)"  | cut -d. -f2)
+PYTHONLIB	:= python$(PY1).$(PY2)
+#say := $(shell echo "$(PYTHONLIB)" >& 2)
+#$(error bye)
+
 ROOFIT	:= $(ROOTSYS)
 # ----------------------------------------------------------------------------
-NAME	:= turtle
+NAME	:= turtlebinning
 incdir	:= include
 srcdir	:= src
 libdir	:= lib
@@ -47,8 +64,7 @@ LD		:= g++
 endif
 
 CPPFLAGS	:= -I. -I$(incdir)
-CXXFLAGS	:= -O -Wall -fPIC -g -ansi -Wshadow -Wextra \
-$(shell root-config --cflags)
+CXXFLAGS	:= $(shell root-config --cflags)
 LDFLAGS		:= -g
 # ----------------------------------------------------------------------------
 # which operating system?
@@ -65,6 +81,16 @@ LIBS	+= $(shell root-config --libs)
 LIBRARY	:= $(libdir)/lib$(NAME)$(LDEXT)
 # ----------------------------------------------------------------------------
 all: $(LIBRARY)
+
+
+ifdef TURTLE_PREFIX
+install:
+	cp $(incdir)/Turtle.h $(TURTLE_PREFIX)/include
+	cp $(libdir)/lib$(NAME)$(LDEXT) $(TURTLE_PREFIX)/lib
+	find $(libdir) -name "*.pcm" -exec cp {} $(TURTLE_PREFIX)/lib \;
+	cp $(NAME).py $(TURTLE_PREFIX)/lib/$(PYTHONLIB)/site-packages
+endif
+
 
 $(LIBRARY)	: $(OBJECTS)
 	@echo ""
@@ -86,4 +112,13 @@ tidy:
 	rm -rf $(srcdir)/*_dict*.* $(srcdir)/*.o 
 
 clean:
-	rm -rf $(libdir)/* $(srcdir)/*_dict*.* $(srcdir)/*.o 
+	rm -rf $(libdir)/* $(srcdir)/*_dict*.* $(srcdir)/*.o
+
+
+ifdef TURTLE_PREFIX
+uninstall:
+	rm -rf $(TURTLE_PREFIX)/lib/*$(NAME)*
+	rm -rf $(TURTLE_PREFIX)/include/Turtle.h
+	rm -rf $(TURTLE_PREFIX)/lib/$(PYTHONLIB)/site-packages/$(NAME).py
+endif
+

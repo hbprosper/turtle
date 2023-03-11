@@ -7,6 +7,7 @@
 // ---------------------------------------------------------------------------
 #include <vector>
 #include <string>
+#include <map>
 #include "TKDTreeBinning.h"
 // ---------------------------------------------------------------------------
 ///
@@ -29,6 +30,12 @@ public:
 	 std::string treename,
 	 int numberofbins,
 	 int numberofpoints=-1);
+
+  ///
+  Turtle(double* data,
+  	 int numberofbins,
+  	 int numberofpoints,
+  	 int numberofvariables);
 
   ///
   void build(std::string rootfilename, 
@@ -71,6 +78,10 @@ public:
   size_t findBin(std::vector<double>& point)
   { return _btree->FindBin(&point[0]); }
 
+  ///
+  size_t findBin(double* point)
+  { return _btree->FindBin(point); }
+
   size_t nBins() { return _btree->GetNBins();  }
   
   size_t entriesPerBin() { return _entries_per_bin; }
@@ -78,6 +89,14 @@ public:
   ///
   std::vector<std::vector<double> >  pointsInBin(int bin)
     { return _btree->GetPointsInBin( bin ); }
+
+  ///
+  std::vector<std::vector<double> >  points(int bin)
+    { return _btree->GetPointsInBin( bin ); }
+
+  
+  /// Return indices of points in given bin.
+  std::vector<int>  indices(int bin);
 
   /// Clear counts and variances
   void clear();
@@ -92,6 +111,9 @@ public:
 
   /// Histogram data.
   void fill(std::vector<double>& point, double weight=1);
+
+  /// Histogram data.
+  void fill(double* point, double weight=1);
   
   /// Return bin counts for histogrammed data.
   std::vector<double> counts() { return _counts; }
@@ -109,15 +131,23 @@ public:
   std::string              _treename;
   std::vector<double>      _counts;
   std::vector<double>      _variances;
+  std::map<int, std::vector<int> > _indicesmap;
+  
   size_t  _numberofbins;
   size_t  _entries_per_bin;
   size_t  _datasize;
   double* _data;
+  double* _point;
+  size_t  _numberofvars;
+  
   double* _readTree(std::vector<std::string>& rootfilenames, 
                     std::vector<std::string>& variablenames, 
                     std::string treename,
                     int numberofbins,
                     int numberofpoints);
+
+  /// Build map from bin number to the indices of the points within the bin
+  void _buildIndicesMap();
 };
 
 #endif
