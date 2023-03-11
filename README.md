@@ -37,10 +37,10 @@ data.extend(df['z'])
 ### Step 3
 Bin the data.
 ```python
-nbins    = 1000
+nbins   = 1000
 npoints = len(data)
-nparams= 3
-ttb         = tt.Turtle(data, nbins, npoints, nparams)
+nparams = 3
+ttb     = tt.Turtle(data, nbins, npoints, nparams)
 ```
 
 Suppose you want to access the indices of the points that lie in bin number 42. You
@@ -49,7 +49,7 @@ can do so as follows.
 bin = 42
 ind = ttb.indices(bin)
 ```
-This returns a vector of type __std::vector<int>__ containing the
+This returns a vector of type __vector<int>__ containing the
 indices, that is, the ordinal values of the points in the dataframe
 __df__, of the points that lie in bin 42. If you want the points
 themselves, do:
@@ -58,4 +58,4 @@ bin = 42
 pts = ttb.points(bin)
 ```
 which returns the points in a vector of type
-__std::vector<std::vector<double> >__.
+__vector<vector<double>__ __>__.
