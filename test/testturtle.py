@@ -43,7 +43,7 @@ def main():
     
         # find bin in which this point resides ...
 
-        ibin = ttb.findBin(point)
+        ibin = ttb.find(point)
         if ibin < 0:
             raise ValueError(f'point {str(point):s} not in any bin')
         else:

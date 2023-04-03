@@ -79,8 +79,17 @@ public:
   { return _btree->FindBin(&point[0]); }
 
   ///
+  size_t find(std::vector<double>& point)
+  { return _btree->FindBin(&point[0]); }
+
+  ///
   size_t findBin(double* point)
   { return _btree->FindBin(point); }
+
+  ///
+  size_t find(double* point)
+  { return _btree->FindBin(point); }
+
 
   size_t nBins() { return _btree->GetNBins();  }
   
