@@ -95,9 +95,12 @@ Turtle::Turtle(double* data,
     _point(0)
 {
   _numberofbins    = numberofbins;
-  _datasize        = numberofpoints; 
-  _entries_per_bin = _datasize / _numberofbins;
+  _entries_per_bin = numberofpoints / _numberofbins;
   _datasize        = _entries_per_bin * _numberofbins;
+  
+  // make sure datasize matches numberofpoints
+  assert ( _datasize == numberofpoints );
+    
   _numberofvars    = numberofvariables;
   _counts          = vector<double>(numberofbins, 0);
   _variances       = vector<double>(numberofbins, 0);
@@ -319,12 +322,15 @@ void Turtle::_buildIndicesMap()
 	  char str[80];
 	  printf("  %10d\n", (int)entry); 
 	}
+      
       // 1. get point
-      for (size_t j=0; j< _numberofvars; j++)
-        _point[j] = _data[entry+j*_datasize];
+      for (size_t j=0; j < _numberofvars; j++)
+        _point[j] = _data[j*_datasize + entry];
       
       // 2. find bin
       size_t bin = _btree->FindBin(_point);
+      assert(bin >= (size_t)0);
+	
       _indicesmap[bin].push_back(entry);
     }
   cout << "done" << endl;

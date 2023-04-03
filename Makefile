@@ -64,7 +64,7 @@ LD		:= g++
 endif
 
 CPPFLAGS	:= -I. -I$(incdir)
-CXXFLAGS	:= $(shell root-config --cflags)
+CXXFLAGS	:= $(shell root-config --cflags) -fPIC
 LDFLAGS		:= -g
 # ----------------------------------------------------------------------------
 # which operating system?

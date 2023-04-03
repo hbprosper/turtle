@@ -2,32 +2,62 @@
 #-----------------------------------------------------------------------------
 import os, sys, re
 import numpy as np
+import pandas as pd
+import turtlebinning as tb
+
 from array import array
-from ROOT import gSystem
+#-----------------------------------------------------------------------------
+def generate_data(npoints=5000):
+    # generate data and create a dataframe
+    x  = np.random.normal(loc=0, scale=1, size=npoints)
+    y  = np.random.normal(loc=0, scale=2, size=npoints)
+    z  = np.random.normal(loc=0, scale=3, size=npoints)
+    df = pd.DataFrame({'x': x, 'y': y, 'z': z})
+    return df
 #-----------------------------------------------------------------------------
 def main():
-    print("\tTurtle")
 
-    gSystem.AddDynamicPath('%s/../lib' % os.environ['PWD'])
-    gSystem.Load("libturtlebinning")
-    from ROOT import Turtle
+    # generate data and concatenate two data columns
+    # into a single non-numpy array
     
-    nbins   = 100
-    nevents = 1000
-    nparams = 2
-    data    = array('d', np.random.uniform(0, 1, nparams*nevents))
-    turtle  = Turtle(data, nbins, nevents, nparams)
+    nbins   = 1000       # number of bins
+    npoints_per_bin = 7  # number of points per bin
+    npoints = nbins * npoints_per_bin
+    
+    df   = generate_data(npoints=npoints)
+    data = array('d')
+    data.extend(df['x'])
+    data.extend(df['y'])
 
-    for ii in range(nbins):
-        indices = turtle.indicesInBin(ii)
-        print(f'bin[{ii:d}]: ', end='')
-        ll = 0
-        for jj in indices:
-            print(f'{jj:4d}', end='')
-            ll += 1
-            if ll >= 10:
+    # bin data
+    npoints = len(df) 
+    nparams = 2        # number of parameters
+    ttb     = tb.Turtle(data, nbins, npoints, nparams)
+
+    # loop over first K points
+    params  = ['x', 'y']
+    K = 10
+    for ii in range(K):
+
+        point = array('d', df[params].iloc[ii])
+    
+        # find bin in which this point resides ...
+
+        ibin = ttb.findBin(point)
+        if ibin < 0:
+            raise ValueError(f'point {str(point):s} not in any bin')
+        else:
+            indices = ttb.indices(ibin)
+
+            # ... and print the indices of all points in that bin
+            print(f'point {ii:2d} in bin {ibin:4d} containing points: ', end='')
+            ll = 0
+            for jj in indices:
+                print(f'{jj:5d}', end='')
+                ll += 1
+                if ll >= 10:
+                    print()
+            if ll < 10:
                 print()
-        if ll < 10:
-            print()
 #----------------------------------------------------------------------------
 main()
