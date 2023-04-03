@@ -61,16 +61,16 @@ data.extend(df['z'])
 ### Step 3
 Bin the data.
 ```python
-nbins     = 1000
-npoints  = len(df['x']) 
-nparams = 3
-ttb          = tt.Turtle(data, nbins, npoints, nparams)
+nbins    = 1000          # number of bins
+npoints  = len(df['x'])  # number of points
+nparams  = 3             # number of dimensions
+ttb      = tt.Turtle(data, nbins, npoints, nparams)
 ```
 
 You can find in which bin the point $(x_0, y_0, z_0)$ lies using
 ```python
 point = array('d', [x0, y0, z0])
-ibin   = ttb.find(point)
+ibin   = ttb.findBin(point)
 ```
 
 Then you can find the indices of the points that lie in bin $ibin$
