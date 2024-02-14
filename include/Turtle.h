@@ -72,6 +72,12 @@ public:
   const double* width(int bin)  { return _btree->GetBinWidth(bin); }
 
   ///
+  const double* minEdges(int bin)  { return _btree->GetBinMinEdges(bin); }
+
+  ///
+  const double* maxEdges(int bin)  { return _btree->GetBinMaxEdges(bin); }
+
+  ///
   void sortDensity(bool ascend=false) { _btree->SortBinsByDensity(ascend); }
 
   ///
@@ -128,9 +134,9 @@ public:
   std::vector<double> counts() { return _counts; }
 
   /// Return bin variances for histogrammed data.
-  std::vector<double> variances() { return _variances; }
+  std::vector<double> lowEdges() { return _variances; }
 
-
+  
   ClassDef(Turtle,0)
   
  private:

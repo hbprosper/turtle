@@ -7,7 +7,7 @@ import turtlebinning as tb
 
 from array import array
 #-----------------------------------------------------------------------------
-def generate_data(npoints=5000):
+def generate_data(npoints=100000):
     # generate data and create a dataframe
     x  = np.random.normal(loc=0, scale=1, size=npoints)
     y  = np.random.normal(loc=0, scale=2, size=npoints)
