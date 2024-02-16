@@ -66,18 +66,6 @@ public:
   double volume(int bin)  { return _btree->GetBinVolume(bin); }
 
   ///
-  const double* center(int bin) { return _btree->GetBinCenter(bin); }
-
-  ///
-  const double* width(int bin)  { return _btree->GetBinWidth(bin); }
-
-  ///
-  const double* minEdges(int bin)  { return _btree->GetBinMinEdges(bin); }
-
-  ///
-  const double* maxEdges(int bin)  { return _btree->GetBinMaxEdges(bin); }
-
-  ///
   void sortDensity(bool ascend=false) { _btree->SortBinsByDensity(ascend); }
 
   ///
@@ -96,9 +84,10 @@ public:
   size_t find(double* point)
   { return _btree->FindBin(point); }
 
-
+  ///
   size_t nBins() { return _btree->GetNBins();  }
-  
+
+  ///
   size_t entriesPerBin() { return _entries_per_bin; }
   
   ///
@@ -134,8 +123,19 @@ public:
   std::vector<double> counts() { return _counts; }
 
   /// Return bin variances for histogrammed data.
-  std::vector<double> lowEdges() { return _variances; }
+  std::vector<double> variances() { return _variances; }
 
+  ///
+  std::vector<double> center(int bin);
+
+  ///
+  std::vector<double> width(int bin);
+  
+  ///
+  std::vector<double> minEdges(int bin);
+  
+  ///
+  std::vector<double> maxEdges(int bin);
   
   ClassDef(Turtle,0)
   

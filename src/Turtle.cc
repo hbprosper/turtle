@@ -347,3 +347,35 @@ std::vector<int>  Turtle::indices(int bin)
       return vector<int>();
     } 
 }
+
+std::vector<double> Turtle::center(int bin)
+{
+  const double* xp = _btree->GetBinCenter(bin);
+  std::vector<double> x(_numberofvars, 0);
+  copy(xp, xp + _numberofvars, x.begin());
+  return x;
+}
+
+std::vector<double> Turtle::width(int bin)
+{
+  const double* xp = _btree->GetBinWidth(bin);
+  std::vector<double> x(_numberofvars, 0);
+  copy(xp, xp + _numberofvars, x.begin());
+  return x;
+}
+
+std::vector<double> Turtle::minEdges(int bin)
+{
+  const double* xp = _btree->GetBinMinEdges(bin);
+  std::vector<double> x(_numberofvars, 0);
+  copy(xp, xp + _numberofvars, x.begin());
+  return x;
+}
+
+std::vector<double> Turtle::maxEdges(int bin)
+{
+  const double* xp = _btree->GetBinMaxEdges(bin);
+  std::vector<double> x(_numberofvars, 0);
+  copy(xp, xp + _numberofvars, x.begin());
+  return x;
+}
